@@ -22,7 +22,7 @@ select name, owner, species, gender, birth, death from pet;
 
 -- 데이터 넣기(생성, create)
 insert
- into pet
+into pet
 value ('성탄이', '안대혁', 'dog', 'm', '2018-12-25', null);
 
 -- 데이터 삭제(delete)
@@ -35,32 +35,32 @@ load data local infile 'c:\\pet.txt' into table pet;
 
 -- update death
 update pet
-  set death=null
+set death=null
 where name != 'Bowser';
 
 update pet
-  set death='1995-07-29'
+set death='1995-07-29'
 where name = 'Bowser';
 
 -- 조회연습1: where
 
 -- 1990년 이후에 태어난 아이들은?
 select name, species, birth
- from pet
+from pet
 where birth >  '1990-12-31';
 -- Gwen과 함께 사는 아이들은?
 select name, species, owner
- from pet
+from pet
 where owner = 'Gwen';
 -- null 다루기 1 : 살아있는 애들은?
 select name
-  from pet
- where death is null;
+from pet
+where death is null;
  
  -- null 다루기 2 : 죽은 애들은?
 select name
-  from pet
- where death is not null;
+from pet
+where death is not null;
  
 -- like 검색(패턴 매칭) : 이름이 b로 시작하는 아이들은?
 select name from pet where name like 'b%';
