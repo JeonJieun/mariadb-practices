@@ -5,6 +5,9 @@ public class BookVo {
 	private String title;
 	private Long price;
 	private Long categoryNo;
+	
+	private String categoryName;
+	
 	public Long getNo() {
 		return no;
 	}
@@ -29,10 +32,22 @@ public class BookVo {
 	public void setCategoryNo(Long categoryNo) {
 		this.categoryNo = categoryNo;
 	}
+	
+	public String getCategoryName() {
+		return categoryName;
+	}
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+	
 	@Override
 	public String toString() {
-		return "BookVo [no=" + no + ", title=" + title + ", price=" + price + ", categoryNo=" + categoryNo + "]";
+		return "BookVo [no=" + no + ", title=" + title + ", price=" + price + ", categoryNo=" + categoryNo
+				+ ", categoryName=" + categoryName + "]";
 	}
+	
+	
+	
 	
 	
 	

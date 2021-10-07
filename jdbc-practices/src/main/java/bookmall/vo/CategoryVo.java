@@ -2,17 +2,17 @@ package bookmall.vo;
 
 public class CategoryVo {
 	private Long no;
-	private Long name;
+	private String name;
 	public Long getNo() {
 		return no;
 	}
 	public void setNo(Long no) {
 		this.no = no;
 	}
-	public Long getName() {
+	public String getName() {
 		return name;
 	}
-	public void setName(Long name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 	@Override
