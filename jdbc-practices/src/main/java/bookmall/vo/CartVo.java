@@ -1,14 +1,17 @@
 package bookmall.vo;
 
 public class CartVo {
-	private Long quantitiy;
+	private Long quantity;
 	private Long bookNo;
 	private Long memberNo;
-	public Long getQuantitiy() {
-		return quantitiy;
+	
+	private String bookName;
+	private Long bookPrice;
+	public Long getQuantity() {
+		return quantity;
 	}
-	public void setQuantitiy(Long quantitiy) {
-		this.quantitiy = quantitiy;
+	public void setQuantity(Long quantity) {
+		this.quantity = quantity;
 	}
 	public Long getBookNo() {
 		return bookNo;
@@ -22,10 +25,24 @@ public class CartVo {
 	public void setMemberNo(Long memberNo) {
 		this.memberNo = memberNo;
 	}
+	public String getBookName() {
+		return bookName;
+	}
+	public void setBookName(String bookName) {
+		this.bookName = bookName;
+	}
+	public Long getBookPrice() {
+		return bookPrice;
+	}
+	public void setBookPrice(Long bookPrice) {
+		this.bookPrice = bookPrice;
+	}
 	@Override
 	public String toString() {
-		return "CartVo [quantitiy=" + quantitiy + ", bookNo=" + bookNo + ", memberNo=" + memberNo + "]";
+		return "CartVo [quantity=" + quantity + ", bookNo=" + bookNo + ", memberNo=" + memberNo + ", bookName="
+				+ bookName + ", bookPrice=" + bookPrice + "]";
 	}
-
+	
+	
 	
 }

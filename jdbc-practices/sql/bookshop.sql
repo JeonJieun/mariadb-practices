@@ -21,3 +21,4 @@ update book
    set status='대여중'
  where no=1;
 select * from book; 
+

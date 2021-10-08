@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bookmall.vo.BookVo;
-//findAll, insert, update
+
 public class BookDao {
 	public boolean insert(BookVo vo) {
 		boolean result = false;
@@ -204,53 +204,6 @@ public class BookDao {
 		}
 		
 		return result;
-	}
-
-
-	public boolean update(Long no, String title, Long price, Long categoryNo) {
-		boolean result = false;
-		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		
-		try {
-			conn = getConnection();
-			
-			//3. SQL 준비
-			String sql = 
-				"update book" +
-				"   set no=?, title=?, price=?, category_no=?" +
-				" where no=?";
-			pstmt = conn.prepareStatement(sql);
-			
-			//4. 바인딩(binding)
-			pstmt.setLong(1, no);
-			pstmt.setString(2, title);
-			pstmt.setLong(3, price);
-			pstmt.setLong(4, categoryNo);
-			pstmt.setLong(5, no);
-			
-			//5. SQL 실행
-			int count = pstmt.executeUpdate();
-			
-			result = count == 1;
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		} finally {
-			// clean up
-			try {
-				if(pstmt != null) {
-					pstmt.close();
-				}
-				if(conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		return result;		
 	}
 
 }

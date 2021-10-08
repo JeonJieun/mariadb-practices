@@ -1,21 +1,30 @@
 package bookmall.vo;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class OrderVo {
 	private Long no;
-	private Long orderNo;
-	private Long price;
-	private String shipAddr;
+	private String orderNo;
+	private Long price; //결제금액
+	private String shipAddr; //배송지
 	private Long memberNo;
+
+	private String memberName;
+	private String memberEmail;
+	private Long bookNo;
+	private String bookTitle;
+	private Long quantity;
 	public Long getNo() {
 		return no;
 	}
 	public void setNo(Long no) {
 		this.no = no;
 	}
-	public Long getOrderNo() {
+	public String getOrderNo() {
 		return orderNo;
 	}
-	public void setOrderNo(Long orderNo) {
+	public void setOrderNo(String orderNo) {
 		this.orderNo = orderNo;
 	}
 	public Long getPrice() {
@@ -36,11 +45,47 @@ public class OrderVo {
 	public void setMemberNo(Long memberNo) {
 		this.memberNo = memberNo;
 	}
+	public String getMemberName() {
+		return memberName;
+	}
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
+	}
+	public String getMemberEmail() {
+		return memberEmail;
+	}
+	public void setMemberEmail(String memberEmail) {
+		this.memberEmail = memberEmail;
+	}
+	public Long getBookNo() {
+		return bookNo;
+	}
+	public void setBookNo(Long bookNo) {
+		this.bookNo = bookNo;
+	}
+	public String getBookTitle() {
+		return bookTitle;
+	}
+	public void setBookTitle(String bookTitle) {
+		this.bookTitle = bookTitle;
+	}
+	public Long getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(Long Quantity) {
+		this.quantity = Quantity;
+	}
+	
 	@Override
 	public String toString() {
 		return "OrderVo [no=" + no + ", orderNo=" + orderNo + ", price=" + price + ", shipAddr=" + shipAddr
-				+ ", memberNo=" + memberNo + "]";
+				+ ", memberNo=" + memberNo + ", memberName=" + memberName + ", memberEmail="
+				+ memberEmail + ", bookNo=" + bookNo + ", bookTitle=" + bookTitle + ", quantity=" + quantity
+				+ "]";
 	}
+	
+	
+	
 	
 	
 	
