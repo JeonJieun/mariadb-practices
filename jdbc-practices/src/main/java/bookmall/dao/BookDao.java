@@ -67,7 +67,6 @@ public class BookDao {
 		return conn;
 	}
 	
-	//전체 출력
 	public List<BookVo> findAll() {
 		List<BookVo> result = new ArrayList<>();
 		
@@ -80,7 +79,7 @@ public class BookDao {
 			
 			//3. SQL 준비
 			String sql = 
-				" select a.no, a.title, a.price, b.name as categoryName " +
+				" select a.no, a.title, a.price, b.name " +
 				" from book a, category b " +
 				" where a.category_no = b.no " +
 				" order by a.no desc ";
@@ -128,7 +127,7 @@ public class BookDao {
 		
 		return result;
 	}
-//카테고리 별 또는 검색 결과의 도서 리스트
+
 	public List<BookVo> findAll(int num, String str) {
 		List<BookVo> result = new ArrayList<>();
 		
@@ -144,7 +143,7 @@ public class BookDao {
 			
 			if(num==1) { //카테고리 이름
 				sql = 
-				" select a.no, a.title, a.price, b.name as categoryName " +
+				" select a.no, a.title, a.price, b.name " +
 				" from book a, category b " +
 				" where a.category_no = b.no " +
 				" and b.name=? " +
@@ -153,7 +152,7 @@ public class BookDao {
 			
 			else{ //책 이름
 				sql = 
-						" select a.no, a.title, a.price, b.name as categoryName " +
+						" select a.no, a.title, a.price, b.name " +
 						" from book a, category b " +
 						" where a.category_no = b.no " +
 						" and a.title=? " +

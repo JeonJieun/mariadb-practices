@@ -21,19 +21,20 @@ public class OrderDao {
 			conn = getConnection();
 
 			//3. SQL 준비
-			String sql = "insert into orders values(?, ?, ?, ?)";
+			String sql = "insert into orders_book values(?, ?, ?, ?)";
 			pstmt = conn.prepareStatement(sql);
 			
 			//4. 바인딩(binding)
 			pstmt.setLong(1, vo.getQuantity());
 			pstmt.setLong(2, vo.getPrice());
 			pstmt.setLong(3, vo.getBookNo());
-			pstmt.setString(4, vo.getOrderNo());
+			pstmt.setLong(4, vo.getNo());
 			
 			//5. SQL 실행
 			int count = pstmt.executeUpdate();
 			
 			result = count == 1;
+			
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
 		} finally {
@@ -71,12 +72,10 @@ public class OrderDao {
 			
 			result = count == 1;
 			
-			
-			update(vo.getOrderNo(), vo.getPrice(), vo.getShipAddr(), vo.getMemberNo());
-			
-			
-			
-			
+			if(result) {
+				update(findNoInsertVo(vo));
+			}
+
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
 		} finally {
@@ -112,7 +111,7 @@ public class OrderDao {
 		return conn;
 	}
 	
-	public boolean update(String orderNo, Long Price, String shipAddr, Long memberNo) {
+	public boolean update(OrderVo vo) {
 		boolean result = false;
 		
 		Connection conn = null;
@@ -124,16 +123,17 @@ public class OrderDao {
 			//3. SQL 준비
 			String sql = 
 				" update orders " +
-				" set order_no=?, price=?, ship_addr=?, memeber_no=? " +
-				" where order_no = '1' ";
+				" set order_no=?, price=?, ship_addr=?, member_no=? " +
+				" where no =? ";
 			pstmt = conn.prepareStatement(sql);
 			
 			//4. 바인딩(binding)
-			pstmt.setLong(1, no);
-			pstmt.setString(2, title);
-			pstmt.setLong(3, price);
-			pstmt.setLong(4, categoryNo);
-			pstmt.setLong(5, no);
+			pstmt.setString(1, vo.getOrderNo());
+			pstmt.setLong(2, vo.getPrice());
+			pstmt.setString(3, vo.getShipAddr());
+			pstmt.setLong(4, vo.getMemberNo());
+			pstmt.setLong(5, vo.getNo());
+			
 			
 			//5. SQL 실행
 			int count = pstmt.executeUpdate();
@@ -234,11 +234,12 @@ public class OrderDao {
 			conn = getConnection();
 			
 			//3. SQL 준비
-			String sql = " select a.order_no, b.no, b.title, c.quantity " +
-						 " from orders a, book b, cart c, orders_book d, member e " +
-						 " where e.no =? " +
-						 " and a.member_no = e.no and e.no = c.member_no and c.book_no = b.no " +
-						 " and b.no = d.book_no and d.order_no = a.no" +
+			String sql = " select a.order_no, b.no, b.title, d.quantity " +
+						 " from orders a, book b, member c, orders_book d " +
+						 " where c.no =? " +
+						 " and a.member_no = c.no " +
+						 " and a.no = d.orders_no " +
+						 " and b.no = d.book_no " + 
 						 " order by a.order_no desc ";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -250,7 +251,6 @@ public class OrderDao {
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				//select a.order_no, b.no, b.title, c.quantity
 				String orderNo = rs.getString(1);
 				Long bookNo = rs.getLong(2);
 				String bookTitle = rs.getString(3);
@@ -288,5 +288,177 @@ public class OrderDao {
 		return result;
 	}
 
+	public List<OrderVo> findAllOrder(){
+		List<OrderVo> result = new ArrayList<>();
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConnection();
+			
+			//3. SQL 준비
+			String sql = " select no, order_no, price, ship_addr, member_no " +
+						 " from orders " +
+						 " order by order_no desc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			//4. 바인딩(binding)
+			
+			//5. SQL 실행
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				Long no = rs.getLong(1);
+				String orderNo = rs.getString(2);
+				Long price = rs.getLong(3);
+				String shipAddr = rs.getString(4);
+				Long memberNo = rs.getLong(5);
+				
+				
+				OrderVo vo = new OrderVo();
+				vo.setNo(no);
+				vo.setOrderNo(orderNo);
+				vo.setPrice(price);
+				vo.setShipAddr(shipAddr);
+				vo.setMemberNo(memberNo);
+				
+				result.add(vo);
+			}
 
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+			// clean up
+			try {
+				if(rs != null) {
+					rs.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;
+	}
+	
+	public List<OrderVo> findAllOrderBook(){
+		List<OrderVo> result = new ArrayList<>();
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConnection();
+			
+			//3. SQL 준비
+			String sql = " select quantity, price, book_no, orders_no " +
+						 " from orders_book " +
+						 " order by orders_no desc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			//4. 바인딩(binding)
+			
+			//5. SQL 실행
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				Long quantity = rs.getLong(1);
+				Long price = rs.getLong(2);
+				Long bookNo = rs.getLong(3);
+				Long no = rs.getLong(4);
+				
+				
+				OrderVo vo = new OrderVo();
+				vo.setQuantity(quantity);
+				vo.setPrice(price);
+				vo.setBookNo(bookNo);
+				vo.setNo(no);
+				
+				result.add(vo);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+			// clean up
+			try {
+				if(rs != null) {
+					rs.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;
+		
+	}
+	
+	public OrderVo findNoInsertVo(OrderVo vo) {
+		
+		Long no = null;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			conn = getConnection();
+			
+			//3. SQL 준비
+			String sql = " select no " +
+						 " from orders " +
+						 " where order_no = '1' " ;
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			//4. 바인딩(binding)
+			
+			//5. SQL 실행
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				no = rs.getLong(1);
+			}
+			vo.setNo(no);
+			vo.setOrderNo();
+
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+			// clean up
+			try {
+				if(rs != null) {
+					rs.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return vo;
+	}
 }

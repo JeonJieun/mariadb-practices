@@ -7,8 +7,8 @@ import bookmall.vo.CategoryVo;
 
 public class CategoryDaoTest {
 	
-	public static void main(String[] args) {
-		//insertTest();
+	public CategoryDaoTest() {
+		insertTest();
 		findAllTest();
 	}
 
